@@ -42,10 +42,14 @@ def login():
         username = request.form["username"]
         password = request.form["password"]
 
-        sql = "SELECT password_hash FROM users WHERE username = ?"
-        password_hash = db.query(sql, [username])[0][0]
+        sql = "SELECT id, password_hash FROM users WHERE username = ?"
+        result = db.query(sql, [username])[0]
+        print("result:", result)
+        user_id = result["id"]
+        password_hash = result["password_hash"]
 
         if check_password_hash(password_hash, password):
+            session["user_id"] = user_id
             session["username"] = username
             return redirect("/")
         else:
@@ -53,5 +57,24 @@ def login():
 
 @app.route("/logout")
 def logout():
+    del session["user_id"]
     del session["username"]
+    return redirect("/")
+
+@app.route("/new_recipe")
+def new_recipe():
+    return render_template("new_recipe.html")
+
+
+@app.route("/create_recipe", methods=["POST"])
+def create_recipe():
+    title = request.form["title"]
+    ingredient = request.form["ingredient"]
+    instruction = request.form["instruction"]
+    user_id = session["user_id"]
+
+    sql = """INSERT INTO recipes (title, ingredient, instruction, user_id)
+            VALUES (?, ?, ?, ?)"""
+    db.execute(sql, [title, ingredient, instruction, user_id])
+
     return redirect("/")
