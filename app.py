@@ -115,3 +115,15 @@ def remove_recipe(recipe_id):
             return redirect("/")
         else:
             return redirect("/recipe/" + str(recipe_id))
+
+
+@app.route("/find_recipe")
+def find_recipe():
+    query = request.args.get("query")
+    if query:
+        results = recipes.find_recipes(query)
+        return render_template("find_recipe.html", query=query, results=results)
+    else:
+        query = ""
+        results = []
+        return render_template("find_recipe.html", query=query, results=results)
