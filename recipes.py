@@ -20,7 +20,8 @@ def get_recipe(recipe_id):
                     users.username
             FROM recipes, users
             WHERE recipes.user_id = users.id AND recipes.id = ?"""
-    return db.query(sql, [recipe_id])[0]
+    result = db.query(sql, [recipe_id])
+    return result[0] if result else None
 
 def update_recipe(recipe_id, title, ingredient, instruction):
     sql = """UPDATE recipes SET title = ?,
