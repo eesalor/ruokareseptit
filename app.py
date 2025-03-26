@@ -1,10 +1,11 @@
 import sqlite3
 from flask import Flask
-from flask import redirect, render_template, request, session
+from flask import abort, redirect, render_template, request, session
 from werkzeug.security import generate_password_hash, check_password_hash
 import config
 import db
 import recipes
+
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
@@ -88,12 +89,18 @@ def show_recipe(recipe_id):
 @app.route("/edit_recipe/<int:recipe_id>")
 def edit_recipe(recipe_id):
     recipe = recipes.get_recipe(recipe_id)
+    if recipe["user_id"] != session["user_id"]:
+        abort(403)
 
     return render_template("edit_recipe.html", recipe=recipe)
 
 @app.route("/update_recipe", methods=["POST"])
 def update_recipe():
     recipe_id = request.form["recipe_id"]
+    recipe = recipes.get_recipe(recipe_id)
+    if recipe["user_id"] != session["user_id"]:
+        abort(403)
+
     title = request.form["title"]
     ingredient = request.form["ingredient"]
     instruction = request.form["instruction"]
@@ -104,9 +111,11 @@ def update_recipe():
 
 @app.route("/remove_recipe/<int:recipe_id>", methods=["GET", "POST"])
 def remove_recipe(recipe_id):
+    recipe = recipes.get_recipe(recipe_id)
+    if recipe["user_id"] != session["user_id"]:
+        abort(403)
 
     if request.method == "GET":
-        recipe = recipes.get_recipe(recipe_id)
         return render_template("remove_recipe.html", recipe=recipe)
 
     if request.method == "POST":
