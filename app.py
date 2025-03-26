@@ -79,13 +79,13 @@ def new_recipe():
 def create_recipe():
     require_login()
     title = request.form["title"]
-    if len(title) > 80:
+    if not title or len(title) > 80:
         abort(403)
     ingredient = request.form["ingredient"]
-    if len(ingredient) > 1000:
+    if not ingredient or len(ingredient) > 1000:
         abort(403)
     instruction = request.form["instruction"]
-    if len(instruction) > 2000:
+    if not instruction or len(instruction) > 2000:
         abort(403)
     user_id = session["user_id"]
 
@@ -123,13 +123,13 @@ def update_recipe():
         abort(403)
 
     title = request.form["title"]
-    if len(title) > 80:
+    if not title or len(title) > 80:
         abort(403)
     ingredient = request.form["ingredient"]
-    if len(ingredient) > 1000:
+    if not ingredient or len(ingredient) > 1000:
         abort(403)
     instruction = request.form["instruction"]
-    if len(instruction) > 2000:
+    if not instruction or len(instruction) > 2000:
         abort(403)
 
     recipes.update_recipe(recipe_id, title, ingredient, instruction)
