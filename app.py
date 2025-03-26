@@ -84,3 +84,20 @@ def show_recipe(recipe_id):
     recipe = recipes.get_recipe(recipe_id)
 
     return render_template("show_recipe.html", recipe=recipe)
+
+@app.route("/edit_recipe/<int:recipe_id>")
+def edit_recipe(recipe_id):
+    recipe = recipes.get_recipe(recipe_id)
+
+    return render_template("edit_recipe.html", recipe=recipe)
+
+@app.route("/update_recipe", methods=["POST"])
+def update_recipe():
+    recipe_id = request.form["recipe_id"]
+    title = request.form["title"]
+    ingredient = request.form["ingredient"]
+    instruction = request.form["instruction"]
+
+    recipes.update_recipe(recipe_id, title, ingredient, instruction)
+
+    return redirect("/recipe/" + str(recipe_id))
