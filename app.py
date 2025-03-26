@@ -10,6 +10,10 @@ import recipes
 app = Flask(__name__)
 app.secret_key = config.secret_key
 
+def require_login():
+    if "user_id" not in session:
+        abort(403)
+
 @app.route("/")
 def index():
     all_recipes = recipes.get_recipes()
@@ -60,17 +64,20 @@ def login():
 
 @app.route("/logout")
 def logout():
-    del session["user_id"]
-    del session["username"]
+    if "user_id" in session:
+        del session["user_id"]
+        del session["username"]
     return redirect("/")
 
 @app.route("/new_recipe")
 def new_recipe():
+    require_login()
     return render_template("new_recipe.html")
 
 
 @app.route("/create_recipe", methods=["POST"])
 def create_recipe():
+    require_login()
     title = request.form["title"]
     ingredient = request.form["ingredient"]
     instruction = request.form["instruction"]
@@ -90,6 +97,7 @@ def show_recipe(recipe_id):
 
 @app.route("/edit_recipe/<int:recipe_id>")
 def edit_recipe(recipe_id):
+    require_login()
     recipe = recipes.get_recipe(recipe_id)
     if not recipe:
         abort(404)
@@ -100,6 +108,7 @@ def edit_recipe(recipe_id):
 
 @app.route("/update_recipe", methods=["POST"])
 def update_recipe():
+    require_login()
     recipe_id = request.form["recipe_id"]
     recipe = recipes.get_recipe(recipe_id)
     if not recipe:
@@ -117,6 +126,7 @@ def update_recipe():
 
 @app.route("/remove_recipe/<int:recipe_id>", methods=["GET", "POST"])
 def remove_recipe(recipe_id):
+    require_login()
     recipe = recipes.get_recipe(recipe_id)
     if not recipe:
         abort(404)
