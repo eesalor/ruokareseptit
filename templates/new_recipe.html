@@ -10,15 +10,15 @@
   <form action="/create_recipe" method="post">
     <p>
       Otsikko: <br />
-      <input type="text" name="title" />
+      <input type="text" name="title" maxlength="80" />
     </p>
     <p>
       Ainekset: <br />
-      <textarea name="ingredient" rows="8" cols="60"></textarea>
+      <textarea name="ingredient" rows="8" cols="60" maxlength="1000"></textarea>
     </p>
     <p>
       Valmistusohje: <br />
-      <textarea name="instruction" rows="8" cols="60"></textarea>
+      <textarea name="instruction" rows="8" cols="60" maxlength="2000"></textarea>
     </p>
     <input type="submit" value="Luo resepti" />
   </form>
