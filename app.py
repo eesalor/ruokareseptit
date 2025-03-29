@@ -112,7 +112,14 @@ def edit_recipe(recipe_id):
     if recipe["user_id"] != session["user_id"]:
         abort(403)
 
-    return render_template("edit_recipe.html", recipe=recipe)
+    all_classes = recipes.get_all_classes()
+    classes = {}
+    for my_class in all_classes:
+        classes[my_class] = ""
+    for entry in recipes.get_classes(recipe_id):
+        classes[entry["title"]] = entry["value"]
+
+    return render_template("edit_recipe.html", recipe=recipe, classes=classes, all_classes=all_classes)
 
 @app.route("/update_recipe", methods=["POST"])
 def update_recipe():
@@ -134,7 +141,13 @@ def update_recipe():
     if not instruction or len(instruction) > 2000:
         abort(403)
 
-    recipes.update_recipe(recipe_id, title, ingredient, instruction)
+    classes = []
+    for entry in request.form.getlist("classes"):
+        if entry:
+            class_title, class_value = entry.split(":")
+            classes.append((class_title, class_value))
+
+    recipes.update_recipe(recipe_id, title, ingredient, instruction, classes)
 
     return redirect("/recipe/" + str(recipe_id))
 
