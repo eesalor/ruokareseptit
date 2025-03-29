@@ -1,7 +1,6 @@
 import sqlite3
 from flask import Flask
 from flask import abort, redirect, render_template, request, session
-from werkzeug.security import generate_password_hash, check_password_hash
 import config
 import db
 import recipes
@@ -67,8 +66,8 @@ def logout():
 @app.route("/new_recipe")
 def new_recipe():
     require_login()
-    return render_template("new_recipe.html")
-
+    classes = recipes.get_all_classes()
+    return render_template("new_recipe.html", classes=classes)
 
 @app.route("/create_recipe", methods=["POST"])
 def create_recipe():
@@ -82,21 +81,13 @@ def create_recipe():
     instruction = request.form["instruction"]
     if not instruction or len(instruction) > 2000:
         abort(403)
-
-    classes = {}
-    dishes = request.form.getlist("dish")
-    if dishes:
-        classes["Ruokalaji"] = []
-        for choice in dishes:
-            classes["Ruokalaji"].append(choice)
-
-    diets = request.form.getlist("diet")
-    if diets:
-        classes["Erityisruokavalio"] = []
-        for choice in diets:
-            classes["Erityisruokavalio"].append(choice)
-
     user_id = session["user_id"]
+
+    classes = []
+    for entry in request.form.getlist("classes"):
+        if entry:
+            class_title, class_value = entry.split(":")
+            classes.append((class_title, class_value))
 
     recipes.add_recipe(title, ingredient, instruction, user_id, classes)
 

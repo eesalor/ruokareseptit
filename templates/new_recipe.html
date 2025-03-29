@@ -20,17 +20,16 @@
       Valmistusohje: <br />
       <textarea name="instruction" rows="8" cols="60" maxlength="2000" required></textarea>
     </p>
-      Ruokalaji:  <br />
-      <input type="checkbox" name="dish" value="Keitot" /> Keitot
-      <input type="checkbox" name="dish" value="Salaatit" /> Salaatit
-    </p>
-
+    {% for class in classes %}
     <p>
-      Erityisruokavalio: <br />
-      <input type="checkbox" name="diet" value="Gluteeniton" /> Gluteeniton
-      <input type="checkbox" name="diet" value="Vegaaninen" /> Vegaaninen
+    {{ class }}:
     </p>
-
+    <p>
+      {% for option in classes[class] %}
+      <input type="checkbox" name="classes" value="{{ class }}:{{ option }}" />{{ option }}
+      {% endfor %}
+    {% endfor %}
+    </p>
     <input type="submit" value="Luo resepti" />
   </form>
 </body>
