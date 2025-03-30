@@ -38,6 +38,7 @@ def create():
 
     return redirect("/")
 
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "GET":
