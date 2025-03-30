@@ -32,6 +32,27 @@
     </ul>
   </p>
   {% endif %}
+  <h2>Arvostelut</h2>
+  <ul>
+    {% for review in reviews %}
+    <li><a href="/user/{{ review.user_id }}"><strong>{{ review.username }}</strong></a>: {{ review.comment }} (arvosana: {{ review.grade }})</li>
+    {% endfor %}
+  </ul>
+  <h2>Uusi arvostelu</h2>
+  <form action="/create_review" method="post">
+    <p>
+    Kommentti: <br />
+      <textarea name="comment" rows="8" cols="60" maxlength="500" required></textarea><br />
+    Arvosana (1-5): <br />
+      <input type="radio" name="grade" value="1" required/> 1
+      <input type="radio" name="grade" value="2" /> 2
+      <input type="radio" name="grade" value="3" /> 3
+      <input type="radio" name="grade" value="4" /> 4
+      <input type="radio" name="grade" value="5" /> 5
+    </p>
+    <input type="submit" value="Lähetä arvostelu" />
+    <input type="hidden" name="recipe_id" value="{{ recipe.id }}">
+  </form>
   <p>
     <a href="/">Takaisin</a>
   </p>

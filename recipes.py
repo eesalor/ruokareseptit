@@ -73,3 +73,15 @@ def find_recipes(query):
             WHERE title LIKE ? OR ingredient LIKE ?"""
     like = "%" + query + "%"
     return db.query(sql, [like, like])
+
+def add_review(recipe_id, user_id, comment, grade):
+    sql = """INSERT INTO reviews (recipe_id, user_id, comment, grade)
+            VALUES (?, ?, ?, ?)"""
+    db.execute(sql, [recipe_id, user_id, comment, grade])
+
+def get_reviews(recipe_id):
+    sql = """SELECT r.comment, r.grade, u.id user_id, u.username
+            FROM reviews r, users u
+            WHERE r.recipe_id = ? AND r.user_id = u.id
+            ORDER BY r.id"""
+    return db.query(sql, [recipe_id])
