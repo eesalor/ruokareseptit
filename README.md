@@ -15,3 +15,21 @@ Sovelluksen idea on, että käyttäjät pystyvät jakamaan ruokareseptejä.
 
 - Reseptistä näytetään arvosanojen keskiarvo.
 - Käyttäjä pystyy lisäämään kuvan reseptiin.
+
+## Sovelluksen asennus:
+
+Asenna `flask`-kirjasto:
+```
+$ pip install flask
+```
+
+
+Luo tietokannan taulut ja lisää alkutiedot:
+```
+$ sqlite3 database.db < schema.sql
+$ sqlite3 database.db < init.sql
+```
+Käynnistä sovellus:
+```
+$ flask run
+```
