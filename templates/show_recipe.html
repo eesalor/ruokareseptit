@@ -1,62 +1,53 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-<head>
-  <title>{{ recipe.title }}</title>
-</head>
+{% block title %}{{ recipe.title }}{% endblock %}
 
-<body>
-  <h1>{{ recipe.title }}</h1>
-  {% if session.user_id == recipe.user_id %}
-  <p>
-    <a href="/edit_recipe/{{ recipe.id }}">Muokkaa reseptiä</a>
-    <a href="/remove_recipe/{{ recipe.id }}">Poista resepti</a>
-  </p>
-  {% endif %}
-  <p>
-  Ainekset:  {{ recipe.ingredient }}
-  </p>
-  <p>
-  Valmistusohje: {{ recipe.instruction }}
-  </p>
-  <p>
-  Reseptin julkaisija: <a href="/user/{{ recipe.user_id }}">{{ recipe.username }}</a>
-  </p>
-  {% if classes %}
-  <p>
-    Luokat:
-    <ul>
-    {% for class in classes %}
-    <li>{{ class.title }}: {{ class.value }}</li>
-    {% endfor %}
-    </ul>
-  </p>
-  {% endif %}
-  <h2>Arvostelut</h2>
+{% block content %}
+<h2>{{ recipe.title }}</h2>
+{% if session.user_id == recipe.user_id %}
+<p>
+  <a href="/edit_recipe/{{ recipe.id }}">Muokkaa reseptiä</a>
+  <a href="/remove_recipe/{{ recipe.id }}">Poista resepti</a>
+</p>
+{% endif %}
+<p>
+Ainekset:  {{ recipe.ingredient }}
+</p>
+<p>
+Valmistusohje: {{ recipe.instruction }}
+</p>
+<p>
+Reseptin julkaisija: <a href="/user/{{ recipe.user_id }}">{{ recipe.username }}</a>
+</p>
+{% if classes %}
+<p>
+  Luokat:
   <ul>
-    {% for review in reviews %}
-    <li><a href="/user/{{ review.user_id }}"><strong>{{ review.username }}</strong></a>: {{ review.comment }} (arvosana: {{ review.grade }})</li>
-    {% endfor %}
+  {% for class in classes %}
+  <li>{{ class.title }}: {{ class.value }}</li>
+  {% endfor %}
   </ul>
-  <h2>Uusi arvostelu</h2>
-  <form action="/create_review" method="post">
-    <p>
-    Kommentti: <br />
-      <textarea name="comment" rows="8" cols="60" maxlength="500" required></textarea><br />
-    Arvosana (1-5): <br />
-      <input type="radio" name="grade" value="1" required/> 1
-      <input type="radio" name="grade" value="2" /> 2
-      <input type="radio" name="grade" value="3" /> 3
-      <input type="radio" name="grade" value="4" /> 4
-      <input type="radio" name="grade" value="5" /> 5
-    </p>
-    <input type="submit" value="Lähetä arvostelu" />
-    <input type="hidden" name="recipe_id" value="{{ recipe.id }}">
-  </form>
+</p>
+{% endif %}
+<h3>Arvostelut</h3>
+<ul>
+  {% for review in reviews %}
+  <li><a href="/user/{{ review.user_id }}"><strong>{{ review.username }}</strong></a>: {{ review.comment }} (arvosana: {{ review.grade }})</li>
+  {% endfor %}
+</ul>
+<h3>Uusi arvostelu</h3>
+<form action="/create_review" method="post">
   <p>
-    <a href="/">Takaisin</a>
+  Kommentti: <br />
+    <textarea name="comment" rows="8" cols="60" maxlength="500" required></textarea><br />
+  Arvosana (1-5): <br />
+    <input type="radio" name="grade" value="1" required/> 1
+    <input type="radio" name="grade" value="2" /> 2
+    <input type="radio" name="grade" value="3" /> 3
+    <input type="radio" name="grade" value="4" /> 4
+    <input type="radio" name="grade" value="5" /> 5
   </p>
-
-</body>
-
-</html>
+  <input type="submit" value="Lähetä arvostelu" />
+  <input type="hidden" name="recipe_id" value="{{ recipe.id }}">
+</form>
+{% endblock %}

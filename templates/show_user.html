@@ -1,29 +1,20 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-<head>
-  <title>Käyttäjä {{ user.username }}</title>
-</head>
+{% block title %}{{ user.username }}{% endblock %}
 
-<body>
-  <h1>Käyttäjä {{ user.username }}</h1>
-  <p>
-    {% if recipes | count == 1 %}
-    Käyttäjällä on yhteensä {{ recipes | count }} resepti.
-    {% else %}
-    Käyttäjällä on yhteensä {{ recipes | count }} reseptiä.
-    {% endif %}
-  </p>
-  <h2>Reseptit</h2>
-  <ul>
-    {% for recipe in recipes %}
-    <li><a href="/recipe/{{ recipe.id }}">{{ recipe.title }}</a></li>
-    {% endfor %}
-  </ul>
-  <p>
-    <a href="/">Takaisin</a>
-  </p>
-
-</body>
-
-</html>
+{% block content %}
+<h2>Käyttäjä {{ user.username }}</h2>
+<p>
+  {% if recipes | count == 1 %}
+  Käyttäjällä on yhteensä {{ recipes | count }} resepti.
+  {% else %}
+  Käyttäjällä on yhteensä {{ recipes | count }} reseptiä.
+  {% endif %}
+</p>
+<h2>Reseptit</h2>
+<ul>
+  {% for recipe in recipes %}
+  <li><a href="/recipe/{{ recipe.id }}">{{ recipe.title }}</a></li>
+  {% endfor %}
+</ul>
+{% endblock %}
