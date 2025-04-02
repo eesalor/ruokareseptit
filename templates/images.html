@@ -6,6 +6,19 @@
 <h2>{{ recipe.title }}</h2>
 <h3>Reseptin kuvat</h3>
 
+{% if images %}
+<form action="/remove_images" method="post">
+  {% for image in images %}
+  <input type="checkbox" name="image_id" value="{{ image.id }}">
+  <img src="/image/{{ image.id }}" />
+  {% endfor %}
+  <input type="hidden" name="recipe_id" value="{{ recipe.id }}" />
+  <p>
+    <input type="submit" value="Poista valitut" />
+  </p>
+</form>
+{% endif %}
+
 <h4>Lisää uusi kuva</h4>
 <form action="/add_image" method="post" enctype="multipart/form-data">
   <p>
