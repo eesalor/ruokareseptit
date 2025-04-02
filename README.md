@@ -5,6 +5,7 @@ Sovelluksen idea on, että käyttäjät pystyvät jakamaan ruokareseptejä.
 
 - Käyttäjä pystyy luomaan tunnuksen ja kirjautumaan sisään sovellukseen.
 - Käyttäjä pystyy lisäämään sovellukseen reseptejä sekä muokkaamaan ja poistamaan omia reseptejään.
+- Käyttäjä pystyy lisäämään kuvia reseptiin.
 - Käyttäjä näkee kaikkien käyttäjien sovellukseen lisäämät reseptit.
 - Käyttäjä pystyy etsimään hakusanalla sekä omia että muiden käyttäjien lisäämiä reseptejä.
 - Käyttäjäsivu näyttää, montako reseptiä käyttäjä on lisännyt ja listan käyttäjän lisäämistä resepteistä.
@@ -14,7 +15,6 @@ Sovelluksen idea on, että käyttäjät pystyvät jakamaan ruokareseptejä.
 ## Sovellukseen suunnitteilla olevat ominaisuudet:
 
 - Reseptistä näytetään arvosanojen keskiarvo.
-- Käyttäjä pystyy lisäämään kuvan reseptiin.
 
 ## Sovelluksen asennus:
 
