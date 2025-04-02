@@ -218,7 +218,11 @@ def create_review():
     require_login()
 
     comment = request.form["comment"]
+    if not comment or len(comment) > 500:
+        abort(403)
     grade = request.form["grade"]
+    if not grade:
+        abort(403)
     recipe_id = request.form["recipe_id"]
     recipe = recipes.get_recipe(recipe_id)
     if not recipe:
