@@ -32,3 +32,9 @@ CREATE TABLE reviews (
     comment TEXT,
     grade INTEGER
 );
+
+CREATE TABLE images (
+    id INTEGER PRIMARY KEY,
+    recipe_id INTEGER REFERENCES recipes,
+    image BLOB
+);

@@ -87,3 +87,16 @@ def get_reviews(recipe_id):
             WHERE r.recipe_id = ? AND r.user_id = u.id
             ORDER BY r.id"""
     return db.query(sql, [recipe_id])
+
+def get_images(recipe_id):
+    sql = "SELECT id FROM images WHERE recipe_id = ?"
+    return db.query(sql, [recipe_id])
+
+def add_image(recipe_id, image):
+    sql = "INSERT INTO images (recipe_id, image) VALUES (?, ?)"
+    db.execute(sql, [recipe_id, image])
+
+def get_image(image_id):
+    sql = "SELECT image FROM images WHERE id = ?"
+    result = db.query(sql, [image_id])
+    return result[0][0] if result else None

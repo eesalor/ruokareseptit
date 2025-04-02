@@ -1,6 +1,6 @@
 import sqlite3
 from flask import Flask
-from flask import abort, redirect, render_template, request, session
+from flask import abort, make_response, redirect, render_template, request, session
 import config
 import db
 import recipes
@@ -115,8 +115,20 @@ def show_recipe(recipe_id):
 
     classes = recipes.get_classes(recipe_id)
     reviews = recipes.get_reviews(recipe_id)
+    images = recipes.get_images(recipe_id)
 
-    return render_template("show_recipe.html", recipe=recipe, classes=classes, reviews=reviews)
+    return render_template("show_recipe.html", recipe=recipe, classes=classes, reviews=reviews, images=images)
+
+@app.route("/image/<int:image_id>")
+def show_image(image_id):
+    image = recipes.get_image(image_id)
+    if not image:
+        abort(404)
+
+    response = make_response(bytes(image))
+    response.headers.set("Content-Type", "image/png")
+    return response
+
 
 @app.route("/edit_recipe/<int:recipe_id>")
 def edit_recipe(recipe_id):
@@ -234,3 +246,37 @@ def create_review():
 
     return redirect("/recipe/" + str(recipe_id))
 
+@app.route("/images/<int:recipe_id>")
+def edit_images(recipe_id):
+    require_login()
+    recipe = recipes.get_recipe(recipe_id)
+    if not recipe:
+        abort(404)
+    if recipe["user_id"] != session["user_id"]:
+        abort(403)
+
+    images = recipes.get_images(recipe_id)
+
+    return render_template("images.html", recipe=recipe, images=images)
+
+@app.route("/add_image", methods=["POST"])
+def add_image():
+    require_login()
+
+    recipe_id = request.form["recipe_id"]
+    recipe = recipes.get_recipe(recipe_id)
+    if not recipe:
+        abort(404)
+    if recipe["user_id"] != session["user_id"]:
+        abort(403)
+
+    file = request.files["image"]
+    if not file.filename.endswith(".png"):
+        return "VIRHE: väärä tiedostomuoto"
+
+    image = file.read()
+    if len(image) > 100 * 1024:
+        return "VIRHE: liian suuri kuva"
+
+    recipes.add_image(recipe_id, image)
+    return redirect("/images/" + str(recipe_id))
