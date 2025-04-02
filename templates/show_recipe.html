@@ -51,7 +51,8 @@ Reseptin julkaisija: <a href="/user/{{ recipe.user_id }}">{{ recipe.username }}<
     <input type="radio" name="grade" value="4" /> 4
     <input type="radio" name="grade" value="5" /> 5
   </p>
-  <input type="submit" value="Lähetä arvostelu" />
   <input type="hidden" name="recipe_id" value="{{ recipe.id }}">
+  <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+  <input type="submit" value="Lähetä arvostelu" />
 </form>
 {% endblock %}
