@@ -26,7 +26,11 @@ def register():
 @app.route("/create", methods=["POST"])
 def create():
     username = request.form["username"]
+    if not username:
+        abort(403)
     password1 = request.form["password1"]
+    if not password1 or len(password1) < 4:
+        abort(403)
     password2 = request.form["password2"]
     if password1 != password2:
         return "VIRHE: salasanat eivät ole samat"
@@ -46,7 +50,11 @@ def login():
 
     if request.method == "POST":
         username = request.form["username"]
+        if not username:
+            abort(403)
         password = request.form["password"]
+        if not password:
+            abort(403)
 
         user_id = users.check_login(username, password)
         if user_id:
