@@ -4,13 +4,24 @@
 
 {% block content %}
 <h2>Käyttäjä {{ user.username }}</h2>
-<p>
+<ul>
   {% if recipes | count == 1 %}
-  Käyttäjällä on yhteensä {{ recipes | count }} resepti.
+  <li>Käyttäjällä on yhteensä {{ recipes | count }} resepti.</li>
   {% else %}
-  Käyttäjällä on yhteensä {{ recipes | count }} reseptiä.
+  <li>Käyttäjällä on yhteensä {{ recipes | count }} reseptiä.</li>
   {% endif %}
-</p>
+  {% if reviews_received | count == 1 %}
+  <li>Käyttäjä on saanut yhteensä {{ reviews_received | count }} arvostelun resepteihinsä
+  (keskiarvo: {{ average_grade }}.</li>
+  {% else %}
+  <li>Käyttäjä on saanut yhteensä {{ reviews_received | count }} arvostelua resepteihinsä.</li>
+  {% endif %}
+  {% if reviews_given | count == 1 %}
+  <li>Käyttäjä on antanut yhteensä {{ reviews_given | count }} arvostelun.</li>
+  {% else %}
+  <li>Käyttäjä on antanut yhteensä {{ reviews_given | count }} arvostelua.</li>
+  {% endif %}
+</ul>
 <h2>Reseptit</h2>
 <ul>
   {% for recipe in recipes %}
