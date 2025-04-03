@@ -15,10 +15,10 @@
 <img src="/image/{{ image.id }}" alt="Reseptin {{ recipe.title }} kuva" />
 {% endfor %}
 <p>
-Ainekset:  {{ recipe.ingredient }}
+Ainekset: {{ recipe.ingredient | show_lines }}
 </p>
 <p>
-Valmistusohje: {{ recipe.instruction }}
+Valmistusohje: {{ recipe.instruction | show_lines }}
 </p>
 <p>
 Reseptin julkaisija: <a href="/user/{{ recipe.user_id }}">{{ recipe.username }}</a>
@@ -36,7 +36,7 @@ Reseptin julkaisija: <a href="/user/{{ recipe.user_id }}">{{ recipe.username }}<
 <h3>Arvostelut</h3>
 <ul>
   {% for review in reviews %}
-  <li><a href="/user/{{ review.user_id }}"><strong>{{ review.username }}</strong></a>: {{ review.comment }} (arvosana: {{ review.grade }})</li>
+  <li><a href="/user/{{ review.user_id }}"><strong>{{ review.username }}</strong></a>: {{ review.comment | show_lines }} (arvosana: {{ review.grade }})</li>
   {% endfor %}
 </ul>
 <h3>Uusi arvostelu</h3>
