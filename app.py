@@ -247,7 +247,8 @@ def show_user(user_id):
     recipes = users.get_recipes(user_id)
     reviews_received = users.get_received_reviews(user_id)
     reviews_given = users.get_given_reviews(user_id)
-    return render_template("show_user.html", user=user, recipes=recipes, reviews_received=reviews_received, reviews_given=reviews_given)
+    average_grade = users.get_average_grade(user_id)
+    return render_template("show_user.html", user=user, recipes=recipes, reviews_received=reviews_received, reviews_given=reviews_given, average_grade=average_grade)
 
 @app.route("/create_review", methods=["POST"])
 def create_review():

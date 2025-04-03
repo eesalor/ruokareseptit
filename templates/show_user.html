@@ -11,10 +11,9 @@
   <li>Käyttäjällä on yhteensä {{ recipes | count }} reseptiä.</li>
   {% endif %}
   {% if reviews_received | count == 1 %}
-  <li>Käyttäjä on saanut yhteensä {{ reviews_received | count }} arvostelun resepteihinsä
-  (keskiarvo: {{ average_grade }}.</li>
+  <li>Käyttäjä on saanut resepteihinsä yhteensä {{ reviews_received | count }} arvostelun, jonka keskiarvo on {{ average_grade }}.</li>
   {% else %}
-  <li>Käyttäjä on saanut yhteensä {{ reviews_received | count }} arvostelua resepteihinsä.</li>
+  <li>Käyttäjä on saanut resepteihinsä yhteensä {{ reviews_received | count }} arvostelua, joiden keskiarvo on {{ average_grade }}.</li>
   {% endif %}
   {% if reviews_given | count == 1 %}
   <li>Käyttäjä on antanut yhteensä {{ reviews_given | count }} arvostelun.</li>

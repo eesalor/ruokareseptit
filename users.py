@@ -18,6 +18,13 @@ def get_received_reviews(user_id):
             AND recipes.user_id = ?"""
     return db.query(sql, [user_id])
 
+def get_average_grade(user_id):
+    sql = """SELECT ROUND(AVG(grade), 1) FROM reviews, recipes
+            WHERE recipes.id = reviews.recipe_id
+            AND recipes.user_id = ?"""
+    result = db.query(sql, [user_id])
+    return result[0][0]
+
 def get_given_reviews(user_id):
     sql = "SELECT grade FROM reviews WHERE user_id = ?"
     return db.query(sql, [user_id])
