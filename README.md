@@ -8,21 +8,25 @@ Sovelluksen idea on, että käyttäjät pystyvät jakamaan ruokareseptejä.
 - Käyttäjä pystyy lisäämään kuvia reseptiin.
 - Käyttäjä näkee kaikkien käyttäjien sovellukseen lisäämät reseptit.
 - Käyttäjä pystyy etsimään hakusanalla sekä omia että muiden käyttäjien lisäämiä reseptejä.
-- Käyttäjäsivu näyttää, montako reseptiä käyttäjä on lisännyt ja listan käyttäjän lisäämistä resepteistä.
+- Käyttäjäsivu näyttää, montako reseptiä käyttäjä on lisännyt, saatujen ja annettujen arvostelujen lukumäärän, saatujen arvosanojen keskiarvon sekä listan käyttäjän lisäämistä resepteistä.
 - Käyttäjä pystyy valitsemaan reseptille yhden tai useamman luokittelun, kuten ruokalajin (esim. keitot, salaatit, pastat) tai erityisruokavalion (esim. gluteeniton, vegaaninen).
 - Käyttäjä pystyy antamaan reseptille arvostelun sisältäen kommentin ja arvosanan. Reseptistä näytetään eri käyttäjien antamat arvostelut.
 
-## Sovellukseen suunnitteilla olevat ominaisuudet:
+## Sovellukseen suunnitteilla olevat muutokset:
 
-- Reseptistä näytetään arvosanojen keskiarvo.
+- Sovelluksen käytettävyyden ja ulkoasun parantaminen.
 
 ## Sovelluksen asennus:
+
+Kopioi Git-projekti omalle koneellesi:
+```
+$ git clone https://github.com/eesalor/ruokareseptit.git
+```
 
 Asenna `flask`-kirjasto:
 ```
 $ pip install flask
 ```
-
 
 Luo tietokannan taulut ja lisää alkutiedot:
 ```
