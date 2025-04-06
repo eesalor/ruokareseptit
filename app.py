@@ -35,7 +35,7 @@ def index():
 
 @app.route("/register")
 def register():
-    return render_template("register.html")
+    return render_template("register.html", filled={})
 
 @app.route("/create", methods=["POST"])
 def create():
@@ -48,13 +48,15 @@ def create():
     password2 = request.form["password2"]
     if password1 != password2:
         flash("VIRHE: salasanat eivät ole samat")
-        return redirect("/register")
+        filled = {"username": username}
+        return render_template("register.html", filled=filled)
 
     try:
         users.create_user(username, password1)
     except sqlite3.IntegrityError:
         flash("VIRHE: tunnus on jo varattu")
-        return redirect("/register")
+        filled = {"username": username}
+        return render_template("register.html", filled=filled)
 
     flash("Tunnuksen luonti onnistui!")
     return redirect("/")
@@ -63,7 +65,7 @@ def create():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "GET":
-        return render_template("login.html")
+        return render_template("login.html", filled={})
 
     if request.method == "POST":
         username = request.form["username"]
@@ -81,7 +83,8 @@ def login():
             return redirect("/")
         else:
             flash("VIRHE: väärä tunnus tai salasana")
-            return redirect("/login")
+            filled = {"username": username}
+            return render_template("login.html", filled=filled)
 
 @app.route("/logout")
 def logout():
