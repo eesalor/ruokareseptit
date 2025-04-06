@@ -40,6 +40,7 @@ Reseptin julkaisija: <a href="/user/{{ recipe.user_id }}">{{ recipe.username }}<
   {% endfor %}
 </ul>
 <h3>Uusi arvostelu</h3>
+{% if session.username %}
 <form action="/create_review" method="post">
   <p>
   <label for="comment">Kommentti:</label> <br />
@@ -57,4 +58,7 @@ Reseptin julkaisija: <a href="/user/{{ recipe.user_id }}">{{ recipe.username }}<
   <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
   <input type="submit" value="Lähetä arvostelu" />
 </form>
+{% else %}
+<p>Jos haluat jättää reseptiin arvostelun, ole hyvä ja <a href="/login">kirjaudu sisään</a> tai <a href="/register">luo tunnus</a>.</p>
+{% endif %}
 {% endblock %}
