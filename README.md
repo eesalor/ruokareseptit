@@ -12,9 +12,6 @@ Sovelluksen idea on, että käyttäjät pystyvät jakamaan ruokareseptejä.
 - Käyttäjä pystyy valitsemaan reseptille yhden tai useamman luokittelun, kuten ruokalajin (esim. keitot, salaatit, pastat) tai erityisruokavalion (esim. gluteeniton, vegaaninen).
 - Käyttäjä pystyy antamaan reseptille arvostelun sisältäen kommentin ja arvosanan. Reseptistä näytetään eri käyttäjien antamat arvostelut.
 
-## Sovellukseen suunnitteilla olevat muutokset:
-
-- Sovelluksen käytettävyyden ja ulkoasun parantaminen.
 
 ## Sovelluksen asennus:
 
