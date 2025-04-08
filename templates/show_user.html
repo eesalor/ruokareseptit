@@ -4,27 +4,42 @@
 
 {% block content %}
 <h2>Käyttäjä {{ user.username }}</h2>
-<ul>
+
+<p>
+  Käyttäjällä on yhteensä
   {% if recipes | count == 1 %}
-  <li>Käyttäjällä on yhteensä {{ recipes | count }} resepti.</li>
+  <b>{{ recipes | count }}</b> resepti.
   {% else %}
-  <li>Käyttäjällä on yhteensä {{ recipes | count }} reseptiä.</li>
+  <b>{{ recipes | count }}</b> reseptiä.
   {% endif %}
+  </br >
+</p>
+<p>
+  Käyttäjä on saanut resepteihinsä yhteensä <b>{{ reviews_received | count }}</b>
   {% if reviews_received | count == 1 %}
-  <li>Käyttäjä on saanut resepteihinsä yhteensä {{ reviews_received | count }} arvostelun, jonka keskiarvo on {{ average_grade }}.</li>
+  arvostelun, jonka keskiarvo on <b>{{ average_grade }}</b>.
   {% else %}
-  <li>Käyttäjä on saanut resepteihinsä yhteensä {{ reviews_received | count }} arvostelua, joiden keskiarvo on {{ average_grade }}.</li>
+  arvostelua, joiden keskiarvo on <b>{{ average_grade }}</b>.
   {% endif %}
+  </br >
+</p>
+<p>Käyttäjä on antanut yhteensä <b>{{ reviews_given | count }}</b>
   {% if reviews_given | count == 1 %}
-  <li>Käyttäjä on antanut yhteensä {{ reviews_given | count }} arvostelun.</li>
+  arvostelun
   {% else %}
-  <li>Käyttäjä on antanut yhteensä {{ reviews_given | count }} arvostelua.</li>
+   arvostelua
   {% endif %}
-</ul>
+  sovelluksessa oleviin resepteihin.
+  </br >
+</p>
+
 <h2>Reseptit</h2>
-<ul>
-  {% for recipe in recipes %}
-  <li><a href="/recipe/{{ recipe.id }}">{{ recipe.title }}</a></li>
-  {% endfor %}
-</ul>
+{% for recipe in recipes %}
+<div class="recipe">
+  <p>
+    <a href="/recipe/{{ recipe.id }}">{{ recipe.title }}</a>
+  </p>
+</div>
+{% endfor %}
+
 {% endblock %}

@@ -4,41 +4,49 @@
 
 {% block content %}
 <h2>{{ recipe.title }}</h2>
+<p> Julkaisija: <a href="/user/{{ recipe.user_id }}">{{ recipe.username }}</a></p>
+
 {% if session.user_id == recipe.user_id %}
 <p>
-  <a href="/edit_recipe/{{ recipe.id }}">Muokkaa reseptiä</a>
-  <a href="/remove_recipe/{{ recipe.id }}">Poista resepti</a>
+  <a href="/edit_recipe/{{ recipe.id }}">Muokkaa reseptiä</a> |
+  <a href="/remove_recipe/{{ recipe.id }}">Poista resepti</a> |
   <a href="/images/{{ recipe.id }}">Kuvat</a>
 </p>
 {% endif %}
+
 {% for image in images %}
-<img src="/image/{{ image.id }}" alt="Reseptin {{ recipe.title }} kuva" />
+  <img src="/image/{{ image.id }}" alt="Reseptin {{ recipe.title }} kuva" />
 {% endfor %}
-<p>
-Ainekset: {{ recipe.ingredient | show_lines }}
-</p>
-<p>
-Valmistusohje: {{ recipe.instruction | show_lines }}
-</p>
-<p>
-Reseptin julkaisija: <a href="/user/{{ recipe.user_id }}">{{ recipe.username }}</a>
-</p>
-{% if classes %}
-<p>
-  Luokat:
-  <ul>
+
+<div class="recipe">
+  <h4>Ainekset:</h4>
+  <p>
+    {{ recipe.ingredient | show_lines }}
+  </p>
+  <h4>Valmistusohje:</h4>
+  <p>
+    {{ recipe.instruction | show_lines }}
+  </p>
+  {% if classes %}
+  <h4>Luokat:</h4>
   {% for class in classes %}
-  <li>{{ class.title }}: {{ class.value }}</li>
-  {% endfor %}
+  <ul>
+    <li>{{ class.title }}: {{ class.value }}</li>
   </ul>
-</p>
-{% endif %}
-<h3>Arvostelut</h3>
-<ul>
-  {% for review in reviews %}
-  <li><a href="/user/{{ review.user_id }}"><strong>{{ review.username }}</strong></a>: {{ review.comment | show_lines }} (arvosana: {{ review.grade }})</li>
   {% endfor %}
-</ul>
+  {% endif %}
+</div>
+
+<h3>Arvostelut</h3>
+{% for review in reviews %}
+  <div class="review">
+    <p>
+      <a href="/user/{{ review.user_id }}"><strong>{{ review.username }}</strong></a>: {{ review.grade }} / 5</br >
+      {{ review.comment | show_lines }}
+    </p>
+  </div>
+{% endfor %}
+
 <h3>Uusi arvostelu</h3>
 {% if session.username %}
 <form action="/create_review" method="post">

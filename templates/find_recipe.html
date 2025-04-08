@@ -14,10 +14,12 @@
 
 {% if query %}
 <h2>Hakutulokset</h2>
-<ul>
   {% for recipe in results %}
-  <li><a href="/recipe/{{ recipe.id }}">{{ recipe.title }}</a></li>
+  <div class="recipe">
+    <p>
+      <a href="/recipe/{{ recipe.id }}">{{ recipe.title }}</a></li>
+    </p>
+  </div>
   {% endfor %}
-</ul>
 {% endif %}
 {% endblock %}

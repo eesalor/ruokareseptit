@@ -4,8 +4,7 @@
 
 {% block content %}
 <h2>Reseptin poisto</h2>
-<p>Resepti: {{ recipe.title }}</p>
-<p>Haluatko varmasti poistaa reseptin?</p>
+<p>Haluatko varmasti poistaa reseptin <b>{{ recipe.title }}</b>?</p>
 <form action="/remove_recipe/{{ recipe.id }}" method="post">
   <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
   <input type="submit" name="remove" value="Poista resepti" />

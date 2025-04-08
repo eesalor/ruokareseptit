@@ -5,9 +5,12 @@
 {% block content %}
 <h2>Reseptit</h2>
 
-<ul>
-  {% for recipe in recipes %}
-  <li><a href="/recipe/{{ recipe.id }}">{{ recipe.title }}</a></li>
-  {% endfor %}
-</ul>
+{% for recipe in recipes %}
+  <div class="recipe">
+    <p>
+      <a href="/recipe/{{ recipe.id }}">{{ recipe.title }}</a>
+    </p>
+  </div>
+{% endfor %}
+
 {% endblock %}

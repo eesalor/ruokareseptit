@@ -1,0 +1,56 @@
+body {
+  margin: auto;
+  max-width: 50em;
+  font-family: sans-serif;
+  background-color: #ffebcd;
+}
+
+.header {
+  background-color: #ffcc80;
+  color: black;
+  text-align: center;
+  padding: 2em;
+  margin: 0.5em 0;
+}
+
+.nav {
+  background-color: #ffcc80;
+  text-align: center;
+  padding: 0.5em;
+  margin: 0;
+  color: black;
+}
+
+h1, h2 {
+  margin: 0;
+}
+
+.recipe {
+  border: 1px solid grey;
+  margin: 1em;
+  padding: 0.5em;
+  background-color: white;
+}
+
+.recipe2 {
+  border: 1px solid grey;
+  margin: 1em;
+  padding: 0.5em;
+  background-color: white;
+  width: 50%
+}
+
+.review {
+  border: 1px solid grey;
+  margin: 1em;
+  padding: 0.2em 0.5em;
+  background-color: white;
+}
+
+.info {
+  border: 1.5px solid grey;
+  margin: 1em;
+  padding: 0.5em;
+  background-color: white;
+  color: red;
+}
