@@ -1,5 +1,6 @@
 import db
 
+
 def add_recipe(title, ingredient, instruction, user_id, classes):
     sql = """INSERT INTO recipes (title, ingredient, instruction, user_id)
             VALUES (?, ?, ?, ?)"""
@@ -12,14 +13,17 @@ def add_recipe(title, ingredient, instruction, user_id, classes):
     for class_title, class_value in classes:
         db.execute(sql, [recipe_id, class_title, class_value])
 
+
 def get_classes(recipe_id):
     sql = """SELECT title, value FROM recipe_classes
             WHERE recipe_id = ?"""
     return db.query(sql, [recipe_id])
 
+
 def get_recipes():
     sql = "SELECT id, title FROM recipes"
     return db.query(sql)
+
 
 def get_all_classes():
     sql = "SELECT title, value FROM classes ORDER BY id"
@@ -33,6 +37,7 @@ def get_all_classes():
 
     return classes
 
+
 def get_recipe(recipe_id):
     sql = """SELECT recipes.id,
                     recipes.title,
@@ -44,6 +49,7 @@ def get_recipe(recipe_id):
             WHERE recipes.user_id = users.id AND recipes.id = ?"""
     result = db.query(sql, [recipe_id])
     return result[0] if result else None
+
 
 def update_recipe(recipe_id, title, ingredient, instruction, classes):
     sql = """UPDATE recipes SET title = ?,
@@ -61,6 +67,7 @@ def update_recipe(recipe_id, title, ingredient, instruction, classes):
     for class_title, class_value in classes:
         db.execute(sql, [recipe_id, class_title, class_value])
 
+
 def remove_recipe(recipe_id):
     sql = "DELETE FROM recipe_classes WHERE recipe_id = ?"
     db.execute(sql, [recipe_id])
@@ -71,6 +78,7 @@ def remove_recipe(recipe_id):
     sql = "DELETE FROM recipes WHERE id = ?"
     db.execute(sql, [recipe_id])
 
+
 def find_recipes(query):
     sql = """SELECT id, title
             FROM recipes
@@ -78,10 +86,12 @@ def find_recipes(query):
     like = "%" + query + "%"
     return db.query(sql, [like, like])
 
+
 def add_review(recipe_id, user_id, comment, grade):
     sql = """INSERT INTO reviews (recipe_id, user_id, comment, grade)
             VALUES (?, ?, ?, ?)"""
     db.execute(sql, [recipe_id, user_id, comment, grade])
+
 
 def get_reviews(recipe_id):
     sql = """SELECT r.comment, r.grade, u.id user_id, u.username
@@ -90,18 +100,22 @@ def get_reviews(recipe_id):
             ORDER BY r.id"""
     return db.query(sql, [recipe_id])
 
+
 def get_images(recipe_id):
     sql = "SELECT id FROM images WHERE recipe_id = ?"
     return db.query(sql, [recipe_id])
+
 
 def add_image(recipe_id, image):
     sql = "INSERT INTO images (recipe_id, image) VALUES (?, ?)"
     db.execute(sql, [recipe_id, image])
 
+
 def get_image(image_id):
     sql = "SELECT image FROM images WHERE id = ?"
     result = db.query(sql, [image_id])
     return result[0][0] if result else None
+
 
 def remove_image(recipe_id, image_id):
     sql = """DELETE FROM images
