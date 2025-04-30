@@ -8,9 +8,10 @@
 
 {% if session.user_id == recipe.user_id %}
 <p>
-  <a href="/edit_recipe/{{ recipe.id }}">Muokkaa reseptiä</a> |
-  <a href="/remove_recipe/{{ recipe.id }}">Poista resepti</a> |
-  <a href="/images/{{ recipe.id }}">Kuvat</a>
+  <a href="/edit_recipe/{{ recipe.id }}" class="link_button">Muokkaa reseptiä</a>
+  <a href="/remove_recipe/{{ recipe.id }}"class="link_button">Poista resepti</a>
+  <a href="/images/{{ recipe.id }}" class="link_button">Kuvat</a>
+  <br />
 </p>
 {% endif %}
 
@@ -38,6 +39,10 @@
 </div>
 
 <h3>Arvostelut</h3>
+{% if reviews | count == 0 %}
+  <p>Ei arvosteluja<p/>
+{% endif %}
+
 {% for review in reviews %}
   <div class="review">
     <p>
@@ -45,6 +50,7 @@
       {{ review.comment | show_lines }}
     </p>
   </div>
+<br />
 {% endfor %}
 
 <h3>Uusi arvostelu</h3>
