@@ -16,7 +16,9 @@
 </p>
 <p>
   Käyttäjä on saanut resepteihinsä yhteensä <b>{{ reviews_received | count }}</b>
-  {% if reviews_received | count == 1 %}
+  {% if reviews_received | count == 0 %}
+  arvostelua.
+  {% elif reviews_received | count == 1 %}
   arvostelun, jonka keskiarvo on <b>{{ average_grade }}</b>.
   {% else %}
   arvostelua, joiden keskiarvo on <b>{{ average_grade }}</b>.
