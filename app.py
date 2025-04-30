@@ -31,7 +31,7 @@ def show_lines(content):
 @app.route("/")
 def index():
     all_recipes = recipes.get_recipes()
-    return render_template("index.html", recipes = all_recipes)
+    return render_template("index.html", recipes=all_recipes)
 
 @app.route("/register")
 def register():
@@ -81,6 +81,7 @@ def login():
             session["user_id"] = user_id
             session["username"] = username
             session["csrf_token"] = secrets.token_hex(16)
+            flash("Kirjautuminen onnistui!")
             return redirect(next_page)
 
         else:
@@ -93,6 +94,7 @@ def logout():
     if "user_id" in session:
         del session["user_id"]
         del session["username"]
+    flash("Uloskirjautuminen onnistui!")
     return redirect("/")
 
 @app.route("/new_recipe")
@@ -130,7 +132,7 @@ def create_recipe():
             classes.append((class_title, class_value))
 
     recipes.add_recipe(title, ingredient, instruction, user_id, classes)
-
+    flash("Reseptin luonti onnistui!")
     return redirect("/")
 
 @app.route("/recipe/<int:recipe_id>")
@@ -210,6 +212,7 @@ def update_recipe():
 
     recipes.update_recipe(recipe_id, title, ingredient, instruction, classes)
 
+    flash("Reseptin muokkaus onnistui!")
     return redirect("/recipe/" + str(recipe_id))
 
 @app.route("/remove_recipe/<int:recipe_id>", methods=["GET", "POST"])
@@ -228,6 +231,7 @@ def remove_recipe(recipe_id):
         check_csrf()
         if "remove" in request.form:
             recipes.remove_recipe(recipe_id)
+            flash("Reseptin poisto onnistui!")
             return redirect("/")
         else:
             return redirect("/recipe/" + str(recipe_id))
@@ -275,6 +279,7 @@ def create_review():
 
     recipes.add_review(recipe_id, user_id, comment, grade)
 
+    flash("Arvostelun lähettäminen onnistui!")
     return redirect("/recipe/" + str(recipe_id))
 
 @app.route("/images/<int:recipe_id>")
@@ -303,7 +308,15 @@ def add_image():
         abort(403)
 
     file = request.files["image"]
+    if not file:
+        flash("VIRHE: Valitse ensin kuva, jonka haluat lisätä!")
+        return redirect("/images/" + str(recipe_id))
+
     if not file.filename.endswith(".png"):
+        flash("VIRHE: väärä tiedostomuoto")
+        return redirect("/images/" + str(recipe_id))
+
+    if not file.filename.endswith(".jpg"):
         flash("VIRHE: väärä tiedostomuoto")
         return redirect("/images/" + str(recipe_id))
 
@@ -313,6 +326,7 @@ def add_image():
         return redirect("/images/" + str(recipe_id))
 
     recipes.add_image(recipe_id, image)
+    flash("Kuvan lisääminen onnistui!")
     return redirect("/images/" + str(recipe_id))
 
 @app.route("/remove_images", methods=["POST"])
@@ -330,4 +344,5 @@ def remove_images():
     for image_id in request.form.getlist("image_id"):
         recipes.remove_image(recipe_id, image_id)
 
+    flash("Valitsemiesi kuvien poistaminen onnistui!")
     return redirect("/images/" + str(recipe_id))
