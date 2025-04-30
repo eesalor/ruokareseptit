@@ -25,17 +25,17 @@
     </p>
   </div>
 
-  {% if session.username %}
-  <p>
-    Olet kirjautunut nimellä <a href="/user/{{ session.user_id }}">{{ session.username }}</a>.
-  </p>
-  {% endif %}
-
    {% for message in get_flashed_messages() %}
    <p class="info">
      {{ message }}
    </p>
    {% endfor %}
+
+  {% if session.username %}
+  <p>
+    Olet kirjautunut nimellä <a href="/user/{{ session.user_id }}">{{ session.username }}</a>.
+  </p>
+  {% endif %}
 
   {% block content %}{% endblock %}
 </body>
