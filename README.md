@@ -1,7 +1,7 @@
 # Ruokareseptit
 Sovelluksen idea on, että käyttäjät pystyvät jakamaan ruokareseptejä.
 
-## Sovelluksen tämänhetkinen tilanne:
+## Sovelluksen toiminnot:
 
 - Käyttäjä pystyy luomaan tunnuksen ja kirjautumaan sisään sovellukseen.
 - Käyttäjä pystyy lisäämään sovellukseen reseptejä sekä muokkaamaan ja poistamaan omia reseptejään.
