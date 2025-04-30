@@ -33,7 +33,7 @@
   </p>
   {% endfor %}
   <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
-  <input type="submit" value="Päivitä reseptiä" />
+  <input type="submit" class="button" value="Päivitä reseptiä" />
 </form>
 <p>
   <a href="/recipe/{{ recipe.id }}">Takaisin reseptiin</a>
