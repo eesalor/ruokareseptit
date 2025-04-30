@@ -1,10 +1,11 @@
 import secrets
 import sqlite3
+
 from flask import Flask
 from flask import abort, flash, make_response, redirect, render_template, request, session
 import markupsafe
+
 import config
-import db
 import recipes
 import users
 
@@ -12,9 +13,11 @@ import users
 app = Flask(__name__)
 app.secret_key = config.secret_key
 
+
 def require_login():
     if "user_id" not in session:
         abort(403)
+
 
 def check_csrf():
     if "csrf_token" not in request.form:
@@ -22,20 +25,24 @@ def check_csrf():
     if request.form["csrf_token"] != session["csrf_token"]:
         abort(403)
 
+
 @app.template_filter()
 def show_lines(content):
     content = str(markupsafe.escape(content))
     content = content.replace("\n", "<br />")
     return markupsafe.Markup(content)
 
+
 @app.route("/")
 def index():
     all_recipes = recipes.get_recipes()
     return render_template("index.html", recipes=all_recipes)
 
+
 @app.route("/register")
 def register():
     return render_template("register.html", filled={})
+
 
 @app.route("/create", methods=["POST"])
 def create():
@@ -59,13 +66,16 @@ def create():
         return render_template("register.html", filled=filled)
 
     flash("Tunnuksen luonti onnistui!")
-    return redirect("/")
+    return redirect("/login")
 
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "GET":
-        return render_template("login.html", filled={}, next_page=request.referrer)
+        if request.referrer.endswith("/register"):
+            return render_template("login.html", filled={})
+        return render_template("login.html", filled={},
+                               next_page=request.referrer)
 
     if request.method == "POST":
         username = request.form["username"]
@@ -87,7 +97,9 @@ def login():
         else:
             flash("VIRHE: väärä tunnus tai salasana")
             filled = {"username": username}
-            return render_template("login.html", filled=filled, next_page=next_page)
+            return render_template("login.html", filled=filled,
+                                   next_page=next_page)
+
 
 @app.route("/logout")
 def logout():
@@ -97,11 +109,13 @@ def logout():
     flash("Uloskirjautuminen onnistui!")
     return redirect("/")
 
+
 @app.route("/new_recipe")
 def new_recipe():
     require_login()
     classes = recipes.get_all_classes()
     return render_template("new_recipe.html", classes=classes)
+
 
 @app.route("/create_recipe", methods=["POST"])
 def create_recipe():
@@ -135,6 +149,7 @@ def create_recipe():
     flash("Reseptin luonti onnistui!")
     return redirect("/")
 
+
 @app.route("/recipe/<int:recipe_id>")
 def show_recipe(recipe_id):
     recipe = recipes.get_recipe(recipe_id)
@@ -145,7 +160,9 @@ def show_recipe(recipe_id):
     reviews = recipes.get_reviews(recipe_id)
     images = recipes.get_images(recipe_id)
 
-    return render_template("show_recipe.html", recipe=recipe, classes=classes, reviews=reviews, images=images)
+    return render_template("show_recipe.html", recipe=recipe, classes=classes,
+                           reviews=reviews, images=images)
+
 
 @app.route("/image/<int:image_id>")
 def show_image(image_id):
@@ -174,7 +191,9 @@ def edit_recipe(recipe_id):
     for entry in recipes.get_classes(recipe_id):
         classes[entry["title"]] = entry["value"]
 
-    return render_template("edit_recipe.html", recipe=recipe, classes=classes, all_classes=all_classes)
+    return render_template("edit_recipe.html", recipe=recipe, classes=classes,
+                           all_classes=all_classes)
+
 
 @app.route("/update_recipe", methods=["POST"])
 def update_recipe():
@@ -215,7 +234,9 @@ def update_recipe():
     flash("Reseptin muokkaus onnistui!")
     return redirect("/recipe/" + str(recipe_id))
 
-@app.route("/remove_recipe/<int:recipe_id>", methods=["GET", "POST"])
+
+@app.route("/remove_recipe/<int:recipe_id>",
+           methods=["GET", "POST"])
 def remove_recipe(recipe_id):
     require_login()
     recipe = recipes.get_recipe(recipe_id)
@@ -242,11 +263,14 @@ def find_recipe():
     query = request.args.get("query")
     if query:
         results = recipes.find_recipes(query)
-        return render_template("find_recipe.html", query=query, results=results)
+        return render_template("find_recipe.html", query=query,
+                               results=results)
     else:
         query = ""
         results = []
-        return render_template("find_recipe.html", query=query, results=results)
+        return render_template("find_recipe.html", query=query,
+                               results=results)
+
 
 @app.route("/user/<int:user_id>")
 def show_user(user_id):
@@ -257,7 +281,11 @@ def show_user(user_id):
     reviews_received = users.get_received_reviews(user_id)
     reviews_given = users.get_given_reviews(user_id)
     average_grade = users.get_average_grade(user_id)
-    return render_template("show_user.html", user=user, recipes=recipes, reviews_received=reviews_received, reviews_given=reviews_given, average_grade=average_grade)
+    return render_template("show_user.html", user=user, recipes=recipes,
+                           reviews_received=reviews_received,
+                           reviews_given=reviews_given,
+                           average_grade=average_grade)
+
 
 @app.route("/create_review", methods=["POST"])
 def create_review():
@@ -282,6 +310,7 @@ def create_review():
     flash("Arvostelun lähettäminen onnistui!")
     return redirect("/recipe/" + str(recipe_id))
 
+
 @app.route("/images/<int:recipe_id>")
 def edit_images(recipe_id):
     require_login()
@@ -294,6 +323,7 @@ def edit_images(recipe_id):
     images = recipes.get_images(recipe_id)
 
     return render_template("images.html", recipe=recipe, images=images)
+
 
 @app.route("/add_image", methods=["POST"])
 def add_image():
@@ -312,11 +342,8 @@ def add_image():
         flash("VIRHE: Valitse ensin kuva, jonka haluat lisätä!")
         return redirect("/images/" + str(recipe_id))
 
-    if not file.filename.endswith(".png"):
-        flash("VIRHE: väärä tiedostomuoto")
-        return redirect("/images/" + str(recipe_id))
-
-    if not file.filename.endswith(".jpg"):
+    if not file.filename.endswith(".png") \
+            or not file.filename.endswith(".png"):
         flash("VIRHE: väärä tiedostomuoto")
         return redirect("/images/" + str(recipe_id))
 
@@ -328,6 +355,7 @@ def add_image():
     recipes.add_image(recipe_id, image)
     flash("Kuvan lisääminen onnistui!")
     return redirect("/images/" + str(recipe_id))
+
 
 @app.route("/remove_images", methods=["POST"])
 def remove_images():
